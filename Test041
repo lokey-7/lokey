@@ -1,0 +1,45 @@
+package test;
+
+import java.util.List;
+
+import redis.clients.jedis.Jedis;
+
+public class Test041 {
+
+	/**
+	 * main函数.
+	 * 
+	 * @param args
+	 *            启动参数
+	 * @throws Exception
+	 *             Exception
+	 */
+	public static void main(String... s) throws Exception {
+		Jedis jedis = new Jedis("localhost");
+		// 删除这个数据库下的数据
+		// jedis.flushDB();
+		// 删除所有
+		// jedis.flushAll();
+		// 删除指定的key
+		jedis.del("foo");
+		// jedis.set("foo", "bar");
+		String value = jedis.get("foo");
+		System.out.println("value：" + value);
+		// check whether server is running or not
+		System.out.println("Server is running: " + jedis.ping());
+		// jedis.lpush("myLst", "lokey");
+		// jedis.lpush("myLst", "帅哥");
+		// jedis.lpush("myLst", "英俊潇洒玉树临风");
+		// jedis.lpush("myLst", "一直被模仿，从未被超越");
+		// List<String> list = new ArrayList<String>();
+		// Set<String> set = jedis.keys("myLst:*");
+		// list.addAll(set);
+		List<String> list = jedis.lrange("myLst", 0, 18);
+		for (int i = 0; i < list.size(); i++) {
+			System.out.println("myLst里储存的值：" + list.get(i));
+		}
+		jedis.close();
+		// jedis.quit();
+		System.out.println("Server is stop: " + jedis.ping());
+	}
+}
